@@ -1,0 +1,15 @@
+body {
+  color: #fff;
+  margin: 0;
+  text-align: center;
+  background: #000;
+  cursor: crosshair;
+}
+
+p {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.header {
+  top: 42%;
+}
