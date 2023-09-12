@@ -13,3 +13,19 @@ p {
 .header {
   top: 42%;
 }
+
+.disable-selection {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+h1::after {
+  content: ' AsmrProg';
+  font-size: 12px;
+  position: absolute;
+  top: 3px;
+  padding-left: 5px;
+  font-weight: 400;
+}
