@@ -143,3 +143,61 @@ function onDocumentTouchMove(e) {
 window.addEventListener('mousemove', onMouseMove, false);
 window.addEventListener('touchstart', onDocumentTouchStart, false);
 window.addEventListener('touchmove', onDocumentTouchMove, false);
+
+var ambientLight = new THREE.AmbientLight(0xFFFFFF, 4);
+var lightFront = new THREE.SpotLight(0xFFFFFF, 20, 10);
+var lightBack = new THREE.PointLight(0xFFFFFF, 0.5);
+var spotLightHelper = new THREE.SpotLightHelper(lightFront);
+
+lightFront.rotation.x = 45 * Math.PI / 180;
+lightFront.rotation.z = -45 * Math.PI / 180;
+lightFront.position.set(5, 5, 5);
+lightFront.castShadow = true;
+lightFront.shadow.mapSize.width = 6000;
+lightFront.shadow.mapSize.height = lightFront.shadow.mapSize.width;
+lightFront.penumbra = 0.1;
+lightBack.position.set(0, 6, 0);
+
+smoke.position.y = 2;
+
+scene.add(ambientLight);
+city.add(lightFront);
+scene.add(lightBack);
+scene.add(city);
+city.add(smoke);
+city.add(town);
+
+var gridHelper = new THREE.GridHelper(60, 120, 0xFF0000, 0x000000);
+city.add(gridHelper);
+
+var createCars = function (cScale = 2, cPos = 20, cColor = 0xFFFF00) {
+  var cMat = new THREE.MeshToonMaterial({ color: cColor, side: THREE.DoubleSide });
+  var cGeo = new THREE.CubeGeometry(1, cScale / 40, cScale / 40);
+  var cElem = new THREE.Mesh(cGeo, cMat);
+  var cAmp = 3;
+
+  if (createCarPos) {
+    createCarPos = false;
+    cElem.position.x = -cPos;
+    cElem.position.z = (mathRandom(cAmp));
+
+    TweenMax.to(cElem.position, 3, { x: cPos, repeat: -1, yoyo: true, delay: mathRandom(3) });
+  } else {
+    createCarPos = true;
+    cElem.position.x = (mathRandom(cAmp));
+    cElem.position.z = -cPos;
+    cElem.rotation.y = 90 * Math.PI / 180;
+
+    TweenMax.to(cElem.position, 5, { z: cPos, repeat: -1, yoyo: true, delay: mathRandom(3), ease: Power1.easeInOut });
+  };
+  cElem.receiveShadow = true;
+  cElem.castShadow = true;
+  cElem.position.y = Math.abs(mathRandom(5));
+  city.add(cElem);
+};
+
+var generateLines = function () {
+  for (var i = 0; i < 60; i++) {
+    createCars(0.1, 20);
+  };
+};
